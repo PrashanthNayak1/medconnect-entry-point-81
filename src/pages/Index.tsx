@@ -54,7 +54,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         
         {/* Left Side - Branding */}
@@ -62,7 +62,7 @@ const Index = () => {
           <div className="text-center space-y-6">
             <div className="w-32 h-32 mx-auto bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-gray-100">
               <img 
-                src="/lovable-uploads/f774ab4f-49c1-46a3-9cb0-935098ea75cb.png" 
+                src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
                 alt="MedConnect Logo" 
                 className="w-24 h-16 object-contain"
               />
@@ -70,23 +70,23 @@ const Index = () => {
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">MedConnect</h1>
               <p className="text-xl text-gray-600 mb-4">Your Health Monitoring Partner</p>
-              <Badge variant="secondary" className="text-sm px-4 py-2 bg-green-100 text-green-800">
+              <Badge variant="secondary" className="text-sm px-4 py-2 bg-blue-100 text-blue-800">
                 Track Your Health Journey
               </Badge>
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-red-100">
-              <div className="text-2xl font-bold text-red-600">100K+</div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-blue-100">
+              <div className="text-2xl font-bold text-blue-600">100K+</div>
               <div className="text-sm text-gray-600">Users</div>
             </div>
             <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-green-100">
               <div className="text-2xl font-bold text-green-600">500+</div>
               <div className="text-sm text-gray-600">Health Records</div>
             </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-red-100">
-              <div className="text-2xl font-bold text-red-600">24/7</div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-blue-100">
+              <div className="text-2xl font-bold text-blue-600">24/7</div>
               <div className="text-sm text-gray-600">Monitoring</div>
             </div>
             <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-green-100">
@@ -102,7 +102,7 @@ const Index = () => {
             <CardHeader className="space-y-4 pb-6">
               <div className="flex lg:hidden w-20 h-20 mx-auto bg-white rounded-2xl items-center justify-center shadow-lg border border-gray-100">
                 <img 
-                  src="/lovable-uploads/f774ab4f-49c1-46a3-9cb0-935098ea75cb.png" 
+                  src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
                   alt="MedConnect Logo" 
                   className="w-16 h-12 object-contain"
                 />
@@ -139,7 +139,7 @@ const Index = () => {
                           placeholder="John Smith"
                           value={formData.fullName}
                           onChange={handleInputChange}
-                          className="pl-10 h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                          className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                           required
                         />
                       </div>
@@ -159,7 +159,7 @@ const Index = () => {
                             placeholder="+1 (555) 123-4567"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="pl-10 h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                            className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -177,7 +177,7 @@ const Index = () => {
                             type="date"
                             value={formData.dateOfBirth}
                             onChange={handleInputChange}
-                            className="pl-10 h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                            className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -195,7 +195,7 @@ const Index = () => {
                         placeholder="Emergency contact number"
                         value={formData.emergencyContact}
                         onChange={handleInputChange}
-                        className="h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                        className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         required
                       />
                     </div>
@@ -212,7 +212,7 @@ const Index = () => {
                           placeholder="A+, B-, O+, etc."
                           value={formData.bloodType}
                           onChange={handleInputChange}
-                          className="h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                          className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         />
                       </div>
 
@@ -227,7 +227,7 @@ const Index = () => {
                           placeholder="Known allergies"
                           value={formData.allergies}
                           onChange={handleInputChange}
-                          className="h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                          className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         />
                       </div>
                     </div>
@@ -248,7 +248,7 @@ const Index = () => {
                       placeholder="your.email@example.com"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="pl-10 h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                      className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       required
                     />
                   </div>
@@ -267,7 +267,7 @@ const Index = () => {
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="pl-10 pr-10 h-12 border-gray-200 focus:border-red-500 focus:ring-red-500"
+                      className="pl-10 pr-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       required
                     />
                     <button
@@ -284,7 +284,7 @@ const Index = () => {
                   <div className="text-right">
                     <button
                       type="button"
-                      className="text-sm text-red-600 hover:text-red-800 font-medium"
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                     >
                       Forgot password?
                     </button>
@@ -293,7 +293,7 @@ const Index = () => {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-gradient-to-r from-red-600 to-green-600 hover:from-red-700 hover:to-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   {isLogin ? (
                     <>
@@ -334,9 +334,9 @@ const Index = () => {
                 <div className="text-center">
                   <p className="text-xs text-gray-500 leading-relaxed">
                     By creating an account, you agree to our{" "}
-                    <button className="text-red-600 hover:underline">Terms of Service</button>
+                    <button className="text-blue-600 hover:underline">Terms of Service</button>
                     {" "}and{" "}
-                    <button className="text-red-600 hover:underline">Privacy Policy</button>
+                    <button className="text-blue-600 hover:underline">Privacy Policy</button>
                   </p>
                 </div>
               )}
