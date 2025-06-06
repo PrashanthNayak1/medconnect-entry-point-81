@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/596dfcae-622a-455b-9f74-00f811e23c73) and start prompting.
+Simply visit the [Lovable Project](https://medconnect-entry-point-82.lovable.app/) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
