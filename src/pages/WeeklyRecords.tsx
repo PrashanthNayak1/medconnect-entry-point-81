@@ -286,67 +286,73 @@ const WeeklyRecords = () => {
           </div>
         </div>
 
-        {/* Charts Section - Stacked Vertically with Scrollable Container */}
+        {/* Charts Section - Individual Horizontal Scrolling */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">ECG and EMG Data</h2>
           
-          <ScrollArea className="h-[600px] w-full border rounded-lg p-4 bg-white">
-            <div className="space-y-8">
-              {/* ECG Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Activity className="w-5 h-5 text-blue-600" />
-                    <span>ECG Data</span>
-                  </CardTitle>
-                  <CardDescription>Electrocardiogram readings from the past week</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ChartContainer config={chartConfig} className="h-80 w-full">
-                    <LineChart data={ecgData} width={800} height={300}>
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="var(--color-ecg)" 
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
+          <div className="space-y-8">
+            {/* ECG Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Activity className="w-5 h-5 text-blue-600" />
+                  <span>ECG Data</span>
+                </CardTitle>
+                <CardDescription>Electrocardiogram readings from the past week</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="w-full">
+                  <div className="w-[1200px] h-80">
+                    <ChartContainer config={chartConfig} className="h-full w-full">
+                      <LineChart data={ecgData} width={1200} height={300}>
+                        <XAxis dataKey="time" />
+                        <YAxis />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Line 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="var(--color-ecg)" 
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ChartContainer>
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
 
-              {/* EMG Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Activity className="w-5 h-5 text-green-600" />
-                    <span>EMG Data</span>
-                  </CardTitle>
-                  <CardDescription>Electromyography readings from the past week</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ChartContainer config={chartConfig} className="h-80 w-full">
-                    <LineChart data={emgData} width={800} height={300}>
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="var(--color-emg)" 
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
-            </div>
-          </ScrollArea>
+            {/* EMG Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Activity className="w-5 h-5 text-green-600" />
+                  <span>EMG Data</span>
+                </CardTitle>
+                <CardDescription>Electromyography readings from the past week</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="w-full">
+                  <div className="w-[1200px] h-80">
+                    <ChartContainer config={chartConfig} className="h-full w-full">
+                      <LineChart data={emgData} width={1200} height={300}>
+                        <XAxis dataKey="time" />
+                        <YAxis />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Line 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="var(--color-emg)" 
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ChartContainer>
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Download Report Button */}
