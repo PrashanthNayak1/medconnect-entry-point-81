@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home, Package, Phone as ContactIcon, User } from "lucide-react";
+import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
             {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
               <Link to="/home" className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium">
-                <Home className="w-4 h-4" />
+                <HomeIcon className="w-4 h-4" />
                 <span>Home</span>
               </Link>
               <Link to="/products" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
