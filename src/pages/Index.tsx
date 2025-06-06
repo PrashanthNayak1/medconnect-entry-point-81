@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,7 @@ const Index = () => {
     allergies: ""
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -37,6 +38,11 @@ const Index = () => {
       title: isLogin ? "Login Successful" : "Registration Successful",
       description: isLogin ? "Welcome back to MedConnect!" : "Welcome to MedConnect! Please verify your email.",
     });
+    
+    // Redirect to home page after successful login/registration
+    setTimeout(() => {
+      navigate("/home");
+    }, 1500);
   };
 
   const toggleMode = () => {
