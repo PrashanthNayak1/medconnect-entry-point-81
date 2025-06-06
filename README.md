@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/596dfcae-622a-455b-9f74-00f811e23c73
+**URL**: https://medconnect-entry-point-82.lovable.app/
 
 ## How can I edit this code?
 
