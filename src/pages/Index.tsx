@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -67,9 +68,9 @@ const Index = () => {
               />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">MedConnect</h1>
-              <p className="text-xl text-gray-600 mb-4">Your Health Monitoring Partner</p>
-              <Badge variant="secondary" className="text-sm px-4 py-2 bg-blue-100 text-blue-800">
+              <h1 className="text-5xl font-bold text-gray-900 mb-2">MedConnect</h1>
+              <p className="text-2xl text-gray-600 mb-4">Your Health Monitoring Partner</p>
+              <Badge variant="secondary" className="text-base px-6 py-3 bg-blue-100 text-blue-800">
                 Track Your Health Journey
               </Badge>
             </div>
