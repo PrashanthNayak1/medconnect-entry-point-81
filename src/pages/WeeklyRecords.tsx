@@ -235,11 +235,11 @@ const WeeklyRecords = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md border">
                 <img 
-                  src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
+                  src="/lovable-uploads/44f92ce3-b732-4c77-a4ed-ccfe96943c61.png" 
                   alt="MedConnect Logo" 
-                  className="w-8 h-6 object-contain"
+                  className="w-10 h-8 object-contain"
                 />
               </div>
               <span className="text-xl font-bold text-gray-900">MedConnect</span>

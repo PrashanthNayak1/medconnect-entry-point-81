@@ -2,46 +2,72 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User } from "lucide-react";
+import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const NavigationLinks = () => (
+    <>
+      <Link to="/home" className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium">
+        <HomeIcon className="w-4 h-4" />
+        <span>Home</span>
+      </Link>
+      <Link to="/products" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <Package className="w-4 h-4" />
+        <span>Products</span>
+      </Link>
+      <Link to="/contact" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <ContactIcon className="w-4 h-4" />
+        <span>Contact Us</span>
+      </Link>
+      <Link to="/profile" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <User className="w-4 h-4" />
+        <span>Profile</span>
+      </Link>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* Navigation Bar */}
+      {/* Navigation Bar with Mobile Menu */}
       <nav className="bg-white shadow-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md border">
                 <img 
-                  src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
+                  src="/lovable-uploads/44f92ce3-b732-4c77-a4ed-ccfe96943c61.png" 
                   alt="MedConnect Logo" 
-                  className="w-8 h-6 object-contain"
+                  className="w-10 h-8 object-contain"
                 />
               </div>
               <span className="text-xl font-bold text-gray-900">MedConnect</span>
             </div>
 
-            {/* Navigation Links */}
+            {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/home" className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium">
-                <HomeIcon className="w-4 h-4" />
-                <span>Home</span>
-              </Link>
-              <Link to="/products" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <Package className="w-4 h-4" />
-                <span>Products</span>
-              </Link>
-              <Link to="/contact" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <ContactIcon className="w-4 h-4" />
-                <span>Contact Us</span>
-              </Link>
-              <Link to="/profile" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <User className="w-4 h-4" />
-                <span>Profile</span>
-              </Link>
+              <NavigationLinks />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-64">
+                  <div className="flex flex-col space-y-6 mt-8">
+                    <NavigationLinks />
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
