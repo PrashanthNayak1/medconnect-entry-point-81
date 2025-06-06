@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download, Menu } from "lucide-react";
@@ -185,30 +184,10 @@ const WeeklyRecords = () => {
   const ChartWrapper = ({ children, title }: { children: React.ReactNode; title: string }) => {
     if (isMobile) {
       return (
-        <ScrollArea className="w-full h-96">
+        <ScrollArea className="w-full h-96" orientation="horizontal">
           <div 
-            className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
-            onTouchStart={handleMobileChartScroll}
-            onTouchMove={handleMobileChartScroll}
-            onMouseDown={(e) => {
-              const target = e.currentTarget as HTMLElement;
-              const startX = e.pageX - target.offsetLeft;
-              const scrollLeft = target.scrollLeft;
-              
-              const handleMouseMove = (e: MouseEvent) => {
-                const x = e.pageX - target.offsetLeft;
-                const walk = (x - startX) * 2;
-                target.scrollLeft = scrollLeft - walk;
-              };
-              
-              const handleMouseUp = () => {
-                document.removeEventListener('mousemove', handleMouseMove);
-                document.removeEventListener('mouseup', handleMouseUp);
-              };
-              
-              document.addEventListener('mousemove', handleMouseMove);
-              document.addEventListener('mouseup', handleMouseUp);
-            }}
+            className="w-[1200px] h-80"
+            style={{ overflowX: 'auto', overflowY: 'hidden' }}
           >
             {children}
           </div>
