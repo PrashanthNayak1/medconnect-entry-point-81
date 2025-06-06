@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download, Menu } from "lucide-react";
@@ -8,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Sample data for the last week
 const weeklyData = {
@@ -62,6 +62,7 @@ const chartConfig = {
 
 const WeeklyRecords = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const generateChartSVG = (data: any[], color: string, title: string) => {
     const width = 400;
@@ -175,6 +176,72 @@ const WeeklyRecords = () => {
       </Link>
     </>
   );
+
+  const handleMobileChartScroll = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
+  const ChartWrapper = ({ children, title }: { children: React.ReactNode; title: string }) => {
+    if (isMobile) {
+      return (
+        <ScrollArea className="w-full h-96">
+          <div 
+            className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
+            onTouchStart={handleMobileChartScroll}
+            onTouchMove={handleMobileChartScroll}
+            onMouseDown={(e) => {
+              const startX = e.pageX - e.currentTarget.offsetLeft;
+              const scrollLeft = e.currentTarget.scrollLeft;
+              
+              const handleMouseMove = (e: MouseEvent) => {
+                const x = e.pageX - e.currentTarget.offsetLeft;
+                const walk = (x - startX) * 2;
+                e.currentTarget.scrollLeft = scrollLeft - walk;
+              };
+              
+              const handleMouseUp = () => {
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+              };
+              
+              document.addEventListener('mousemove', handleMouseMove);
+              document.addEventListener('mouseup', handleMouseUp);
+            }}
+          >
+            {children}
+          </div>
+        </ScrollArea>
+      );
+    }
+
+    return (
+      <ScrollArea className="w-full">
+        <div 
+          className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
+          onMouseDown={(e) => {
+            const startX = e.pageX - e.currentTarget.offsetLeft;
+            const scrollLeft = e.currentTarget.scrollLeft;
+            
+            const handleMouseMove = (e: MouseEvent) => {
+              const x = e.pageX - e.currentTarget.offsetLeft;
+              const walk = (x - startX) * 2;
+              e.currentTarget.scrollLeft = scrollLeft - walk;
+            };
+            
+            const handleMouseUp = () => {
+              document.removeEventListener('mousemove', handleMouseMove);
+              document.removeEventListener('mouseup', handleMouseUp);
+            };
+            
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+          }}
+        >
+          {children}
+        </div>
+      </ScrollArea>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
@@ -301,44 +368,22 @@ const WeeklyRecords = () => {
                 <CardDescription>Electrocardiogram readings from the past week</CardDescription>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="w-full">
-                  <div 
-                    className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
-                    onMouseDown={(e) => {
-                      const startX = e.pageX - e.currentTarget.offsetLeft;
-                      const scrollLeft = e.currentTarget.scrollLeft;
-                      
-                      const handleMouseMove = (e: MouseEvent) => {
-                        const x = e.pageX - e.currentTarget.offsetLeft;
-                        const walk = (x - startX) * 2;
-                        e.currentTarget.scrollLeft = scrollLeft - walk;
-                      };
-                      
-                      const handleMouseUp = () => {
-                        document.removeEventListener('mousemove', handleMouseMove);
-                        document.removeEventListener('mouseup', handleMouseUp);
-                      };
-                      
-                      document.addEventListener('mousemove', handleMouseMove);
-                      document.addEventListener('mouseup', handleMouseUp);
-                    }}
-                  >
-                    <ChartContainer config={chartConfig} className="h-full w-full">
-                      <LineChart data={ecgData} width={1200} height={300}>
-                        <XAxis dataKey="time" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Line 
-                          type="monotone" 
-                          dataKey="value" 
-                          stroke="var(--color-ecg)" 
-                          strokeWidth={2}
-                          dot={false}
-                        />
-                      </LineChart>
-                    </ChartContainer>
-                  </div>
-                </ScrollArea>
+                <ChartWrapper title="ECG Data">
+                  <ChartContainer config={chartConfig} className="h-full w-full">
+                    <LineChart data={ecgData} width={1200} height={300}>
+                      <XAxis dataKey="time" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="var(--color-ecg)" 
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ChartContainer>
+                </ChartWrapper>
               </CardContent>
             </Card>
 
@@ -352,44 +397,22 @@ const WeeklyRecords = () => {
                 <CardDescription>Electromyography readings from the past week</CardDescription>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="w-full">
-                  <div 
-                    className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
-                    onMouseDown={(e) => {
-                      const startX = e.pageX - e.currentTarget.offsetLeft;
-                      const scrollLeft = e.currentTarget.scrollLeft;
-                      
-                      const handleMouseMove = (e: MouseEvent) => {
-                        const x = e.pageX - e.currentTarget.offsetLeft;
-                        const walk = (x - startX) * 2;
-                        e.currentTarget.scrollLeft = scrollLeft - walk;
-                      };
-                      
-                      const handleMouseUp = () => {
-                        document.removeEventListener('mousemove', handleMouseMove);
-                        document.removeEventListener('mouseup', handleMouseUp);
-                      };
-                      
-                      document.addEventListener('mousemove', handleMouseMove);
-                      document.addEventListener('mouseup', handleMouseUp);
-                    }}
-                  >
-                    <ChartContainer config={chartConfig} className="h-full w-full">
-                      <LineChart data={emgData} width={1200} height={300}>
-                        <XAxis dataKey="time" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Line 
-                          type="monotone" 
-                          dataKey="value" 
-                          stroke="var(--color-emg)" 
-                          strokeWidth={2}
-                          dot={false}
-                        />
-                      </LineChart>
-                    </ChartContainer>
-                  </div>
-                </ScrollArea>
+                <ChartWrapper title="EMG Data">
+                  <ChartContainer config={chartConfig} className="h-full w-full">
+                    <LineChart data={emgData} width={1200} height={300}>
+                      <XAxis dataKey="time" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="var(--color-emg)" 
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ChartContainer>
+                </ChartWrapper>
               </CardContent>
             </Card>
           </div>
