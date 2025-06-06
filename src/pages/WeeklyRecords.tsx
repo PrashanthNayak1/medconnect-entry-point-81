@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download, Menu } from "lucide-react";
@@ -190,13 +191,14 @@ const WeeklyRecords = () => {
             onTouchStart={handleMobileChartScroll}
             onTouchMove={handleMobileChartScroll}
             onMouseDown={(e) => {
-              const startX = e.pageX - e.currentTarget.offsetLeft;
-              const scrollLeft = e.currentTarget.scrollLeft;
+              const target = e.currentTarget as HTMLElement;
+              const startX = e.pageX - target.offsetLeft;
+              const scrollLeft = target.scrollLeft;
               
               const handleMouseMove = (e: MouseEvent) => {
-                const x = e.pageX - e.currentTarget.offsetLeft;
+                const x = e.pageX - target.offsetLeft;
                 const walk = (x - startX) * 2;
-                e.currentTarget.scrollLeft = scrollLeft - walk;
+                target.scrollLeft = scrollLeft - walk;
               };
               
               const handleMouseUp = () => {
@@ -219,13 +221,14 @@ const WeeklyRecords = () => {
         <div 
           className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => {
-            const startX = e.pageX - e.currentTarget.offsetLeft;
-            const scrollLeft = e.currentTarget.scrollLeft;
+            const target = e.currentTarget as HTMLElement;
+            const startX = e.pageX - target.offsetLeft;
+            const scrollLeft = target.scrollLeft;
             
             const handleMouseMove = (e: MouseEvent) => {
-              const x = e.pageX - e.currentTarget.offsetLeft;
+              const x = e.pageX - target.offsetLeft;
               const walk = (x - startX) * 2;
-              e.currentTarget.scrollLeft = scrollLeft - walk;
+              target.scrollLeft = scrollLeft - walk;
             };
             
             const handleMouseUp = () => {
