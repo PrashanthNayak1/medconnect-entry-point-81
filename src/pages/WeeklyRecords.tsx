@@ -302,7 +302,27 @@ const WeeklyRecords = () => {
               </CardHeader>
               <CardContent>
                 <ScrollArea className="w-full">
-                  <div className="w-[1200px] h-80">
+                  <div 
+                    className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
+                    onMouseDown={(e) => {
+                      const startX = e.pageX - e.currentTarget.offsetLeft;
+                      const scrollLeft = e.currentTarget.scrollLeft;
+                      
+                      const handleMouseMove = (e: MouseEvent) => {
+                        const x = e.pageX - e.currentTarget.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        e.currentTarget.scrollLeft = scrollLeft - walk;
+                      };
+                      
+                      const handleMouseUp = () => {
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                      };
+                      
+                      document.addEventListener('mousemove', handleMouseMove);
+                      document.addEventListener('mouseup', handleMouseUp);
+                    }}
+                  >
                     <ChartContainer config={chartConfig} className="h-full w-full">
                       <LineChart data={ecgData} width={1200} height={300}>
                         <XAxis dataKey="time" />
@@ -333,7 +353,27 @@ const WeeklyRecords = () => {
               </CardHeader>
               <CardContent>
                 <ScrollArea className="w-full">
-                  <div className="w-[1200px] h-80">
+                  <div 
+                    className="w-[1200px] h-80 cursor-grab active:cursor-grabbing"
+                    onMouseDown={(e) => {
+                      const startX = e.pageX - e.currentTarget.offsetLeft;
+                      const scrollLeft = e.currentTarget.scrollLeft;
+                      
+                      const handleMouseMove = (e: MouseEvent) => {
+                        const x = e.pageX - e.currentTarget.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        e.currentTarget.scrollLeft = scrollLeft - walk;
+                      };
+                      
+                      const handleMouseUp = () => {
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                      };
+                      
+                      document.addEventListener('mousemove', handleMouseMove);
+                      document.addEventListener('mouseup', handleMouseUp);
+                    }}
+                  >
                     <ChartContainer config={chartConfig} className="h-full w-full">
                       <LineChart data={emgData} width={1200} height={300}>
                         <XAxis dataKey="time" />
