@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,11 +59,11 @@ const Index = () => {
         {/* Left Side - Branding */}
         <div className="hidden lg:flex flex-col items-center justify-center space-y-8 p-8">
           <div className="text-center space-y-6">
-            <div className="w-32 h-32 mx-auto bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-gray-100">
+            <div className="w-48 h-48 mx-auto bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-gray-100">
               <img 
                 src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
                 alt="MedConnect Logo" 
-                className="w-24 h-16 object-contain"
+                className="w-36 h-24 object-contain"
               />
             </div>
             <div>
@@ -75,36 +74,17 @@ const Index = () => {
               </Badge>
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-blue-100">
-              <div className="text-2xl font-bold text-blue-600">100K+</div>
-              <div className="text-sm text-gray-600">Users</div>
-            </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-green-100">
-              <div className="text-2xl font-bold text-green-600">500+</div>
-              <div className="text-sm text-gray-600">Health Records</div>
-            </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-blue-100">
-              <div className="text-2xl font-bold text-blue-600">24/7</div>
-              <div className="text-sm text-gray-600">Monitoring</div>
-            </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center border border-green-100">
-              <div className="text-2xl font-bold text-green-600">Secure</div>
-              <div className="text-sm text-gray-600">Data</div>
-            </div>
-          </div>
         </div>
 
         {/* Right Side - Login/Register Form */}
         <div className="w-full max-w-md mx-auto">
           <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
             <CardHeader className="space-y-4 pb-6">
-              <div className="flex lg:hidden w-20 h-20 mx-auto bg-white rounded-2xl items-center justify-center shadow-lg border border-gray-100">
+              <div className="flex lg:hidden w-24 h-24 mx-auto bg-white rounded-2xl items-center justify-center shadow-lg border border-gray-100">
                 <img 
                   src="/lovable-uploads/a580b35e-da8c-4352-9b3d-c4f01a65ef09.png" 
                   alt="MedConnect Logo" 
-                  className="w-16 h-12 object-contain"
+                  className="w-20 h-14 object-contain"
                 />
               </div>
               <div className="text-center">
