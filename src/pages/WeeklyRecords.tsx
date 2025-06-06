@@ -1,10 +1,13 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download } from "lucide-react";
+import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 
 // Sample data for the last week
 const weeklyData = {
@@ -58,37 +61,124 @@ const chartConfig = {
 };
 
 const WeeklyRecords = () => {
-  const handleDownloadReport = () => {
-    // Simple download functionality - in real app this would generate a proper report
-    const reportData = `
-MedConnect Weekly Health Report
-Generated: ${new Date().toLocaleDateString()}
+  const [isOpen, setIsOpen] = useState(false);
 
-Last Recorded Data:
-Date: ${weeklyData.recordedDate}
-Time: ${weeklyData.recordedTime}
-Temperature: ${weeklyData.temperature}
-Blood Pressure: ${weeklyData.bloodPressure}
-SpO2: ${weeklyData.spo2}
-Heart Rate: ${weeklyData.heartRate}
-
-ECG and EMG data charts included in visual report.
-    `;
+  const generateChartSVG = (data: any[], color: string, title: string) => {
+    const width = 400;
+    const height = 200;
+    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
     
-    const blob = new Blob([reportData], { type: 'text/plain' });
+    const maxValue = Math.max(...data.map(d => d.value));
+    const minValue = Math.min(...data.map(d => d.value));
+    const valueRange = maxValue - minValue;
+    
+    const points = data.map((d, i) => {
+      const x = margin.left + (i / (data.length - 1)) * innerWidth;
+      const y = margin.top + ((maxValue - d.value) / valueRange) * innerHeight;
+      return `${x},${y}`;
+    }).join(' ');
+    
+    return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${width}" height="${height}" fill="white"/>
+      <text x="${width/2}" y="15" text-anchor="middle" font-size="14" font-weight="bold">${title}</text>
+      <polyline points="${points}" fill="none" stroke="${color}" stroke-width="2"/>
+      <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="#666" stroke-width="1"/>
+      <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="#666" stroke-width="1"/>
+    </svg>`;
+  };
+
+  const handleDownloadReport = () => {
+    const ecgSvg = generateChartSVG(ecgData, "#3b82f6", "ECG Data");
+    const emgSvg = generateChartSVG(emgData, "#10b981", "EMG Data");
+    
+    const reportHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MedConnect Weekly Health Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0; }
+        .data-item { border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
+        .chart-container { margin: 20px 0; text-align: center; }
+        .chart { border: 1px solid #ddd; margin: 10px 0; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MedConnect Weekly Health Report</h1>
+        <p>Generated: ${new Date().toLocaleDateString()}</p>
+    </div>
+    
+    <h2>Last Recorded Data</h2>
+    <p><strong>Date:</strong> ${weeklyData.recordedDate}</p>
+    <p><strong>Time:</strong> ${weeklyData.recordedTime}</p>
+    
+    <div class="data-grid">
+        <div class="data-item">
+            <h3>Temperature</h3>
+            <p>${weeklyData.temperature}</p>
+        </div>
+        <div class="data-item">
+            <h3>Blood Pressure</h3>
+            <p>${weeklyData.bloodPressure}</p>
+        </div>
+        <div class="data-item">
+            <h3>SpO2</h3>
+            <p>${weeklyData.spo2}</p>
+        </div>
+        <div class="data-item">
+            <h3>Heart Rate</h3>
+            <p>${weeklyData.heartRate}</p>
+        </div>
+    </div>
+    
+    <h2>Chart Data</h2>
+    <div class="chart-container">
+        <div class="chart">${ecgSvg}</div>
+        <div class="chart">${emgSvg}</div>
+    </div>
+</body>
+</html>`;
+    
+    const blob = new Blob([reportHTML], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'weekly-health-report.txt';
+    a.download = 'weekly-health-report.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
+  const NavigationLinks = () => (
+    <>
+      <Link to="/home" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <HomeIcon className="w-4 h-4" />
+        <span>Home</span>
+      </Link>
+      <Link to="/products" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <Package className="w-4 h-4" />
+        <span>Products</span>
+      </Link>
+      <Link to="/contact" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <ContactIcon className="w-4 h-4" />
+        <span>Contact Us</span>
+      </Link>
+      <Link to="/profile" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
+        <User className="w-4 h-4" />
+        <span>Profile</span>
+      </Link>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* Navigation Bar - Same as Home page */}
+      {/* Navigation Bar with Mobile Menu */}
       <nav className="bg-white shadow-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -104,24 +194,25 @@ ECG and EMG data charts included in visual report.
               <span className="text-xl font-bold text-gray-900">MedConnect</span>
             </div>
 
-            {/* Navigation Links */}
+            {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/home" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <HomeIcon className="w-4 h-4" />
-                <span>Home</span>
-              </Link>
-              <Link to="/products" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <Package className="w-4 h-4" />
-                <span>Products</span>
-              </Link>
-              <Link to="/contact" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <ContactIcon className="w-4 h-4" />
-                <span>Contact Us</span>
-              </Link>
-              <Link to="/profile" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 font-medium">
-                <User className="w-4 h-4" />
-                <span>Profile</span>
-              </Link>
+              <NavigationLinks />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-64">
+                  <div className="flex flex-col space-y-6 mt-8">
+                    <NavigationLinks />
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
@@ -195,24 +286,24 @@ ECG and EMG data charts included in visual report.
           </div>
         </div>
 
-        {/* Charts Section */}
+        {/* Charts Section - Stacked Vertically with Scrollable Container */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">ECG and EMG Data</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* ECG Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-blue-600" />
-                  <span>ECG Data</span>
-                </CardTitle>
-                <CardDescription>Electrocardiogram readings from the past week</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartConfig} className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={ecgData}>
+          <ScrollArea className="h-[600px] w-full border rounded-lg p-4 bg-white">
+            <div className="space-y-8">
+              {/* ECG Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Activity className="w-5 h-5 text-blue-600" />
+                    <span>ECG Data</span>
+                  </CardTitle>
+                  <CardDescription>Electrocardiogram readings from the past week</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer config={chartConfig} className="h-80 w-full">
+                    <LineChart data={ecgData} width={800} height={300}>
                       <XAxis dataKey="time" />
                       <YAxis />
                       <ChartTooltip content={<ChartTooltipContent />} />
@@ -224,24 +315,22 @@ ECG and EMG data charts included in visual report.
                         dot={false}
                       />
                     </LineChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
 
-            {/* EMG Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-green-600" />
-                  <span>EMG Data</span>
-                </CardTitle>
-                <CardDescription>Electromyography readings from the past week</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartConfig} className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={emgData}>
+              {/* EMG Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Activity className="w-5 h-5 text-green-600" />
+                    <span>EMG Data</span>
+                  </CardTitle>
+                  <CardDescription>Electromyography readings from the past week</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer config={chartConfig} className="h-80 w-full">
+                    <LineChart data={emgData} width={800} height={300}>
                       <XAxis dataKey="time" />
                       <YAxis />
                       <ChartTooltip content={<ChartTooltipContent />} />
@@ -253,11 +342,11 @@ ECG and EMG data charts included in visual report.
                         dot={false}
                       />
                     </LineChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </div>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </ScrollArea>
         </div>
 
         {/* Download Report Button */}
