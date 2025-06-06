@@ -1,10 +1,11 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, AlertTriangle, Pill, Phone, FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Download, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
