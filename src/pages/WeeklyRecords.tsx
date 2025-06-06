@@ -184,13 +184,14 @@ const WeeklyRecords = () => {
   const ChartWrapper = ({ children, title }: { children: React.ReactNode; title: string }) => {
     if (isMobile) {
       return (
-        <ScrollArea className="w-full h-96" orientation="horizontal">
+        <ScrollArea className="w-full h-96">
           <div 
             className="w-[1200px] h-80"
             style={{ overflowX: 'auto', overflowY: 'hidden' }}
           >
             {children}
           </div>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
       );
     }
