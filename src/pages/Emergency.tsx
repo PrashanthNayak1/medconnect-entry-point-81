@@ -1,66 +1,101 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Activity, Calendar, Home as HomeIcon, Package, Phone as ContactIcon, User, Menu } from "lucide-react";
+import { Activity, Calendar, Home as HomeIcon, Package, Phone as ContactIcon, User, Menu, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
 
-// Sample data for live readings
-const liveData = {
-  temperature: "98.4°F",
-  bloodPressure: "118/78 mmHg",
-  spo2: "99%",
-  heartRate: "74 bpm"
+// Sample emergency data
+const emergencyData = {
+  recordedDate: "2025-06-11",
+  recordedTime: "12:45",
+  temperature: "103.2°F",
+  bloodPressure: "150/95 mmHg",
+  spo2: "85%",
+  heartRate: "120 bpm"
 };
 
-// Sample ECG data
+// Sample ECG data showing irregular pattern
 const ecgData = [
   { time: "00:00", value: 0 },
-  { time: "00:01", value: 0.5 },
-  { time: "00:02", value: 1.2 },
+  { time: "00:01", value: 1.5 },
+  { time: "00:02", value: 2.2 },
   { time: "00:03", value: 0.8 },
-  { time: "00:04", value: -0.2 },
-  { time: "00:05", value: -0.8 },
-  { time: "00:06", value: 0.1 },
-  { time: "00:07", value: 0.7 },
-  { time: "00:08", value: 1.1 },
-  { time: "00:09", value: 0.6 },
+  { time: "00:04", value: -0.5 },
+  { time: "00:05", value: -1.2 },
+  { time: "00:06", value: 0.3 },
+  { time: "00:07", value: 1.8 },
+  { time: "00:08", value: 2.5 },
+  { time: "00:09", value: 1.2 },
   { time: "00:10", value: 0 }
 ];
 
-// Sample EMG data
+// Sample EMG data showing high activity
 const emgData = [
-  { time: "00:00", value: 0.1 },
-  { time: "00:01", value: 0.3 },
-  { time: "00:02", value: 0.8 },
-  { time: "00:03", value: 1.2 },
-  { time: "00:04", value: 0.9 },
-  { time: "00:05", value: 0.4 },
-  { time: "00:06", value: 0.2 },
-  { time: "00:07", value: 0.6 },
-  { time: "00:08", value: 1.0 },
-  { time: "00:09", value: 0.7 },
-  { time: "00:10", value: 0.3 }
+  { time: "00:00", value: 0.5 },
+  { time: "00:01", value: 1.3 },
+  { time: "00:02", value: 2.1 },
+  { time: "00:03", value: 1.8 },
+  { time: "00:04", value: 2.2 },
+  { time: "00:05", value: 1.4 },
+  { time: "00:06", value: 1.8 },
+  { time: "00:07", value: 2.4 },
+  { time: "00:08", value: 2.0 },
+  { time: "00:09", value: 1.7 },
+  { time: "00:10", value: 1.1 }
 ];
 
 const chartConfig = {
   ecg: {
     label: "ECG",
-    color: "#3b82f6"
+    color: "#ef4444"
   },
   emg: {
     label: "EMG", 
-    color: "#10b981"
+    color: "#f59e0b"
   }
 };
 
-const LiveRecords = () => {
+const Emergency = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [isCallActive, setIsCallActive] = useState(false);
   const isMobile = useIsMobile();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isCallActive) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isCallActive]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleCallAmbulance = () => {
+    if (!isCallActive) {
+      setIsCallActive(true);
+      setTimer(0);
+      toast({
+        title: "Emergency Call Initiated",
+        description: "Calling ambulance services...",
+        variant: "destructive",
+      });
+    }
+  };
 
   const NavigationLinks = () => (
     <>
@@ -129,7 +164,7 @@ const LiveRecords = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-100">
       {/* Navigation Bar with Mobile Menu */}
       <nav className="bg-white shadow-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -172,64 +207,112 @@ const LiveRecords = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Emergency Timer */}
+        {isCallActive && (
+          <div className="text-center mb-8">
+            <div className="bg-red-600 text-white px-6 py-4 rounded-lg inline-block">
+              <div className="text-sm font-medium mb-1">Emergency Call Active</div>
+              <div className="text-3xl font-bold">{formatTime(timer)}</div>
+            </div>
+          </div>
+        )}
+
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Live Health Data
+          <h1 className="text-4xl font-bold text-red-600 mb-4">
+            Emergency Health Data
           </h1>
           <p className="text-xl text-gray-600">
-            Real-time health monitoring and live data tracking
+            Critical health monitoring and emergency response
           </p>
         </div>
 
-        {/* Live Data Section */}
+        {/* Emergency Actions */}
+        <div className="mb-8 text-center">
+          <Button 
+            onClick={handleCallAmbulance}
+            size="lg"
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg"
+            disabled={isCallActive}
+          >
+            <Phone className="w-6 h-6 mr-2" />
+            {isCallActive ? "Ambulance Called" : "Call Ambulance"}
+          </Button>
+        </div>
+
+        {/* Emergency Data Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Current Live Data</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Critical Health Data</h2>
           
+          <Card className="mb-6 border-red-200">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-red-600">
+                <Calendar className="w-5 h-5" />
+                <span>Emergency Recording Details</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-600">Date</p>
+                  <p className="text-lg font-semibold">{emergencyData.recordedDate}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Time</p>
+                  <p className="text-lg font-semibold">{emergencyData.recordedTime}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card>
+            <Card className="border-red-300">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-red-600 mb-2">{liveData.temperature}</div>
+                <div className="text-2xl font-bold text-red-600 mb-2">{emergencyData.temperature}</div>
                 <div className="text-gray-600">Temperature</div>
+                <div className="text-xs text-red-500 mt-1">HIGH</div>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-red-300">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-purple-600 mb-2">{liveData.bloodPressure}</div>
+                <div className="text-2xl font-bold text-red-600 mb-2">{emergencyData.bloodPressure}</div>
                 <div className="text-gray-600">Blood Pressure</div>
+                <div className="text-xs text-red-500 mt-1">HIGH</div>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-red-300">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-2">{liveData.spo2}</div>
+                <div className="text-2xl font-bold text-red-600 mb-2">{emergencyData.spo2}</div>
                 <div className="text-gray-600">SpO2</div>
+                <div className="text-xs text-red-500 mt-1">LOW</div>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-red-300">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-green-600 mb-2">{liveData.heartRate}</div>
+                <div className="text-2xl font-bold text-red-600 mb-2">{emergencyData.heartRate}</div>
                 <div className="text-gray-600">Heart Rate</div>
+                <div className="text-xs text-red-500 mt-1">HIGH</div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Charts Section - Individual Horizontal Scrolling */}
+        {/* Charts Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Live ECG and EMG Data</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Emergency ECG and EMG Data</h2>
           
           <div className="space-y-8">
             {/* ECG Chart */}
-            <Card>
+            <Card className="border-red-200">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-blue-600" />
-                  <span>Live ECG Data</span>
+                  <Activity className="w-5 h-5 text-red-600" />
+                  <span>Critical ECG Data</span>
                 </CardTitle>
-                <CardDescription>Real-time Electrocardiogram readings</CardDescription>
+                <CardDescription>Irregular Electrocardiogram readings detected</CardDescription>
               </CardHeader>
               <CardContent>
                 <ChartWrapper title="ECG Data">
@@ -242,7 +325,7 @@ const LiveRecords = () => {
                         type="monotone" 
                         dataKey="value" 
                         stroke="var(--color-ecg)" 
-                        strokeWidth={2}
+                        strokeWidth={3}
                         dot={false}
                       />
                     </LineChart>
@@ -252,13 +335,13 @@ const LiveRecords = () => {
             </Card>
 
             {/* EMG Chart */}
-            <Card>
+            <Card className="border-red-200">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-green-600" />
-                  <span>Live EMG Data</span>
+                  <Activity className="w-5 h-5 text-orange-600" />
+                  <span>Critical EMG Data</span>
                 </CardTitle>
-                <CardDescription>Real-time Electromyography readings</CardDescription>
+                <CardDescription>High muscle activity detected</CardDescription>
               </CardHeader>
               <CardContent>
                 <ChartWrapper title="EMG Data">
@@ -271,7 +354,7 @@ const LiveRecords = () => {
                         type="monotone" 
                         dataKey="value" 
                         stroke="var(--color-emg)" 
-                        strokeWidth={2}
+                        strokeWidth={3}
                         dot={false}
                       />
                     </LineChart>
@@ -286,4 +369,4 @@ const LiveRecords = () => {
   );
 };
 
-export default LiveRecords;
+export default Emergency;
