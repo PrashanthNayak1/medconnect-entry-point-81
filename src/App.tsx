@@ -11,6 +11,7 @@ import LiveRecords from "./pages/LiveRecords";
 import Emergency from "./pages/Emergency";
 import MedicineTracker from "./pages/MedicineTracker";
 import HealthReports from "./pages/HealthReports";
+import WeekData from "./pages/WeekData";
 import ContactDoctor from "./pages/ContactDoctor";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/emergency" element={<Emergency />} />
           <Route path="/medicine-tracker" element={<MedicineTracker />} />
           <Route path="/health-reports" element={<HealthReports />} />
+          <Route path="/week-data/:weekId" element={<WeekData />} />
           <Route path="/contact-doctor" element={<ContactDoctor />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

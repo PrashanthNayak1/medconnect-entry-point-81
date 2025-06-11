@@ -1,58 +1,43 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Menu, Calendar, Heart, Thermometer, Droplet } from "lucide-react";
+import { FileText, Home as HomeIcon, Package, Phone as ContactIcon, User, Menu, Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 
-// Sample weekly data
+// Sample weekly data for the list
 const weeklyData = [
   {
+    id: "week1",
     week: "Week 1 (June 3-9, 2024)",
-    temperature: "98.6°F",
-    bloodPressure: "120/80",
-    heartRate: "72 bpm",
-    weight: "75 kg",
-    bloodSugar: "95 mg/dL",
-    status: "Normal"
+    status: "Normal",
+    summary: "All vitals within normal range"
   },
   {
+    id: "week2",
     week: "Week 2 (June 10-16, 2024)",
-    temperature: "99.1°F",
-    bloodPressure: "125/82",
-    heartRate: "75 bpm",
-    weight: "74.8 kg",
-    bloodSugar: "102 mg/dL",
-    status: "Slightly Elevated"
+    status: "Slightly Elevated",
+    summary: "Temperature and blood pressure slightly elevated"
   },
   {
+    id: "week3",
     week: "Week 3 (June 17-23, 2024)",
-    temperature: "98.4°F",
-    bloodPressure: "118/78",
-    heartRate: "70 bpm",
-    weight: "74.5 kg",
-    bloodSugar: "88 mg/dL",
-    status: "Normal"
+    status: "Normal",
+    summary: "Improved readings, all parameters normal"
   },
   {
+    id: "week4",
     week: "Week 4 (June 24-30, 2024)",
-    temperature: "98.8°F",
-    bloodPressure: "122/79",
-    heartRate: "73 bpm",
-    weight: "74.2 kg",
-    bloodSugar: "94 mg/dL",
-    status: "Normal"
+    status: "Normal",
+    summary: "Consistent healthy readings throughout the week"
   },
   {
+    id: "week5",
     week: "Week 5 (July 1-7, 2024)",
-    temperature: "98.7°F",
-    bloodPressure: "119/77",
-    heartRate: "71 bpm",
-    weight: "74.0 kg",
-    bloodSugar: "91 mg/dL",
-    status: "Optimal"
+    status: "Optimal",
+    summary: "Excellent health metrics across all parameters"
   }
 ];
 
@@ -144,67 +129,32 @@ const HealthReports = () => {
             <span>Weekly Health Reports</span>
           </h1>
           <p className="text-xl text-gray-600">
-            Your complete weekly health data overview
+            Select a week to view detailed health data
           </p>
         </div>
 
         {/* Weekly Data Cards */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           {weeklyData.map((week, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center space-x-2">
-                    <Calendar className="w-5 h-5 text-orange-600" />
-                    <span>{week.week}</span>
-                  </CardTitle>
-                  {getStatusBadge(week.status)}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Thermometer className="w-4 h-4 text-red-500" />
-                    <div>
-                      <div className="text-sm text-gray-600">Temperature</div>
-                      <div className="font-semibold">{week.temperature}</div>
+            <Link key={index} to={`/week-data/${week.id}`}>
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center space-x-2">
+                      <Calendar className="w-5 h-5 text-orange-600" />
+                      <span>{week.week}</span>
+                    </CardTitle>
+                    <div className="flex items-center space-x-3">
+                      {getStatusBadge(week.status)}
+                      <ArrowRight className="w-5 h-5 text-gray-400" />
                     </div>
                   </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Heart className="w-4 h-4 text-blue-500" />
-                    <div>
-                      <div className="text-sm text-gray-600">Blood Pressure</div>
-                      <div className="font-semibold">{week.bloodPressure}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Heart className="w-4 h-4 text-green-500" />
-                    <div>
-                      <div className="text-sm text-gray-600">Heart Rate</div>
-                      <div className="font-semibold">{week.heartRate}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
-                    <div>
-                      <div className="text-sm text-gray-600">Weight</div>
-                      <div className="font-semibold">{week.weight}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Droplet className="w-4 h-4 text-orange-500" />
-                    <div>
-                      <div className="text-sm text-gray-600">Blood Sugar</div>
-                      <div className="font-semibold">{week.bloodSugar}</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{week.summary}</p>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
